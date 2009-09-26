@@ -8,6 +8,10 @@
      session management (login/logout).  Comes bundled with a default Admin role 
      and a Users admin panel, only accessible to users with the Admin role.
 
+= History and Info
+
+The Slave Engine is basically my preferred amalgamation of plugins and techniques to starting sites easily.  This comes built in with a variant of the restful_authentication (http://github.com/technoweenie/restful-authentication/) plugin, so there is no need to install that (in fact, I would recommend not doing so, otherwise things can get hairy, as most things would be duped).  This is closer to a one stop solution for bootstrapping a rails site which has users and administrators.  It's also partially inspired by qadmin (http://github.com/quirkey/qadmin), but modified heavily to slim things down and keep it nice and easy to use.  This is a Rails Engine, which allows you to override most of the functionality you find here that doesn't quite fit with the way you like to do things.  At the very least, you should find that this gets you started pretty quickly.
+
 = Prerequisites to Installing the Slave Engine
 
 NOTE: Slave Engine only works with Rails 2.3.2 or higher.  This is due to the non-backwards compatible method of plugin routing changes with newer Rails.
@@ -20,7 +24,7 @@ The Slave engine requires a few plugins to be installed before it will work prop
 
   $ script/plugin install engines
   
-  Add this to <tt>environment.rb</tt> under the line which requires 'boot' to turn on engines.
+Add this to <tt>environment.rb</tt> under the line which requires 'boot' to turn on engines.
   
   require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 
@@ -57,16 +61,16 @@ Add authentication to your <tt>application_controller.rb</tt>, with the followin
 
 Generate your Slave Engine migrations:
 
-  script/generate plugin_migration
-  rake db:migrate
+  $ script/generate plugin_migration
+  $ rake db:migrate
 
 Generate your Site key for the built-in restful authentication:
 
-  rake auth:gen:site_key
+  $ rake auth:gen:site_key
   
 Create your admin user to access the admin panel
 
-  rake slave_engine:create_admin
+  $ rake slave_engine:create_admin
   
 Follow the prompts to complete user creation.
 
