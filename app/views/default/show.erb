@@ -1,0 +1,5 @@
+<h2><%= model_name.titleize.pluralize %>: <%= @m.to_s %></h2>
+
+<%= admin_controls instance.pluralize, :for => :show, :object => @m %>
+
+<%= render :partial => instance, :object => @m %>

@@ -1,0 +1,113 @@
+= Slave Engine
+
+  slave engine [sleyv en-juh n]
+  - noun
+  1. The Inhumans' holiest relic and birthright, built from Kree technology, unearthed by The Unspoken to take revenge on the humans and turn them to Alpha Primitives.
+  2. A Rails Engine which contains User and Role management, including rudimentary session management (login/logout).  Comes bundled with a default Admin role and a Users admin panel, only accessible to users with the Admin role.
+
+= Prerequisites to Installing the Slave Engine
+
+NOTE: Slave Engine only works with Rails 2.3.2 or higher.  This is due to the non-backwards compatible method of plugin routing changes with newer Rails.
+
+== Plugins
+
+The Slave engine requires a few plugins to be installed before it will work properly:
+
+<tt>engines</tt> - Because this is an Engine:
+
+  $ script/plugin install engines
+  
+  Add this to <tt>environment.rb</tt> under the line which requires 'boot' to turn on engines.
+  
+  require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
+
+== Gems
+
+The Slave Engine demands the following gems be installed as well (it would probably be best to add the following lines to your <tt>environment.rb</tt> file):
+
+  config.gem 'rubyist-aasm', :lib => 'aasm', :source => 'http://gems.github.com'
+  config.gem 'will_paginate'
+
+Then run:
+
+  $ sudo rake gems:install
+
+= Installing The Slave Engine
+
+Grab it from git and add it as a plugin to <tt>vendor/plugins</tt>.
+
+  $ script/plugin install git@github.com:ienders/slave_engine.git
+
+Create a user model <tt>app/models/user.rb</tt>, with the following contents:
+
+  class User < ActiveRecord::Base
+    include SlaveEngine::User
+  end
+
+Add authentication to your <tt>application_controller.rb</tt>, with the following:
+
+  class ApplicationController < ActionController::Base
+    include SlaveEngine::AuthenticatedSystem
+
+    ...
+  end
+
+Generate your Slave Engine migrations:
+
+  script/generate plugin_migration
+  rake db:migrate
+
+Generate your Site key for the built-in restful authentication:
+
+  rake auth:gen:site_key
+  
+Create your admin user to access the admin panel
+
+  rake slave_engine:create_admin
+  
+Follow the prompts to complete user creation.
+
+= Updating your Slave Engine
+
+Anytime you grab a new version of the Slave Engine, you may need to grab fresh migrations:
+
+  $ script/generate plugin_migration slave_engine
+  $ rake db:migrate
+  
+= Making nice admin panels easily
+
+For example, if you have model Foo, and you want to be able to edit/create/list them easily as an administrator, create a controller:
+
+  class FooController < AdminController
+    def admin_table_columns
+      [ 'id', 'foocol', 'bar' ]
+    end
+  end
+
+And create two view partials to tell Slave Engine how to render/edit your model in the admin (for example):
+  
+app/views/foo/_form.erb:
+
+  <% fieldset do %>
+    <p><label>Foo Col</label><%= f.text_field :foocol %></p>
+    <p><label>Bar</label><%= f.text_field :bar %></p>
+  <% end %>
+
+app/views/foo/_foo.erb:
+
+  <div id="<%= dom_id(@foo) %>">
+	  <div class="fields_group">
+	    <h5>Foo Col:</h5>     <%= h @foo.foocol %>
+	    <h5>Bar:</h5>         <%= h @foo.bar %>
+  	  <h5>Created at:</h5>  <%= h @role.created_at %>
+  	  <h5>Updated at:</h5>  <%= h @role.updated_at %>
+    </div>
+  </div>
+  
+Finally, add some admin routing:
+
+In config/routes.rb:
+
+  map.with_options :path_prefix => 'admin' do |admin|
+    admin.resources :foo
+  end

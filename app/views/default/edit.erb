@@ -1,0 +1,9 @@
+<h2><%= model_name.titleize %>: Edit</h2>
+
+<%= admin_controls instance.pluralize, :for => :edit %>
+<%= error_messages_for instance %>
+
+<% form_for(@m, :html => { :multipart => true }) do |f| %>
+  <%= render :partial => 'form', :locals => { :f => f, instance.to_sym => @m } %>
+  <p><%= f.submit "Update" %></p>
+<% end %>

@@ -1,0 +1,23 @@
+<ul class="admin_controls">
+  <% control_set.each do |control| %>
+    <li>
+      <% if control == :index %>
+        <%= link_to(image_tag('admin/icon_list.png') + " Back to List", :controller => controller, :action => 'index') %>
+      <% elsif control == :new %>
+        <%= link_to(image_tag('admin/icon_new.png') + " New", :controller => controller, :action => 'new') %>
+      <% elsif control == :edit %>
+        <%= link_to(image_tag('admin/icon_edit.png') + " Edit", :controller => controller, :action => 'edit', :id => obj) %>
+      <% elsif control == :show %>
+        <%= link_to(image_tag('admin/icon_show.png') + " View", :controller => controller, :action => 'show', :id => obj) %>
+      <% elsif control == :destroy %>
+        <%= link_to(
+          image_tag('admin/icon_destroy.png') + " Delete",
+          { :controller => controller, :action => 'destroy', :id => obj },
+          :confirm => 'Are you sure?',
+          :method  => :delete
+        ) %>
+      <% end %>
+    </li>
+  <% end %>
+  <%= additional_content %>
+</ul>

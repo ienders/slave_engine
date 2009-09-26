@@ -1,0 +1,37 @@
+<fieldset>
+  <legend>Role</legend>
+  <p><label>Title</label><%= f.text_field :title %></p>
+  <p><label>Description</label><%= f.text_field :description %></p>
+</fieldset>
+<h3>Privileges</h3>
+<fieldset>
+  <legend>Special</legend>
+  <% Role.privilege_names.each do |name| %>
+  <% fields_for "role[privileges][#{name}]", (role.privileges.find_by_name(name) || role.privileges.build(:name => name)) do |pf| %>
+  <p><%= pf.check_box :value %><%= pf.label :value, "#{name.titleize}?", :class => 'radio_label' %></p>
+  <% end %>
+  <% end %>
+  <p><strong><a href="#" class="select_all">Select All</a> / <a href="#" class="select_all deselect_all">Deselect All</a></strong></p>
+</fieldset>
+<fieldset>
+  <legend>Admin Access</legend>
+  <% admin_menu_items.each do |admin_menu_item| %>
+  <% admin_controller_name, admin_controller_title = (admin_menu_item.is_a?(Array) ? [admin_menu_item[1], admin_menu_item[0].titleize] : [admin_menu_item, admin_menu_item.to_s.titleize]) %>
+  <% field_name = "can_access_#{admin_controller_name}" %>
+  
+  <% fields_for "role[privileges][#{field_name}]", (role.privileges.find_by_name(field_name) || role.privileges.build(:name => field_name)) do |pf| %>
+  <p><%= pf.check_box :value %><%= pf.label :value, admin_controller_title, :class => 'checkbox_label' %></p>
+  <% end %>
+  <% end %>
+  <p><strong><a href="#" class="select_all">Select All</a> / <a href="#" class="select_all deselect_all">Deselect All</a></strong></p>
+</fieldset>
+
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+    $('a.select_all').click(function(e) {
+      e.preventDefault();
+      var value = $(this).is('.deselect_all') ? '' : 'checked';
+      $(this).parents('fieldset').find(':checkbox').attr("checked", value);
+    })
+  });
+</script>

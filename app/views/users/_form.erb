@@ -1,0 +1,16 @@
+<% fieldset do %>
+  <p><label>Email</label><%= f.text_field :email %></p>
+  <p><label>First name</label><%= f.text_field :first_name %></p>
+  <p><label>Last name</label><%= f.text_field :last_name %></p>
+  <p><label>Password</label><%= f.password_field :password %></p>
+  <p><label>Password Confirmation</label><%= f.password_field :password_confirmation %></p>
+<% end %>
+
+<% fieldset 'Roles' do %>
+	<% @roles.each do |role| %>
+  	<p>
+  	  <%= check_box_tag "roles[#{role.title}]", 1, @user.role_titles.include?(role.title), :id => "roles_#{role.title}" %>
+  	  <label class="radio_label" for="roles_<%= role.title %>"><%= role.description %></label>
+  	</p>
+  <% end %>
+<% end %>

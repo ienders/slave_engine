@@ -1,0 +1,36 @@
+<table class = "admin_table">
+  <tr>
+    <% column_types = {} %>
+    <% columns.each_with_index do |attribute, i| %>
+      <% column = model.columns.detect {|c| c.name == attribute.to_s } %>
+      <% column_types[attribute] = column.type if column %>
+      <th <%= i == 0 ? 'class = "first_col"' : '' %>><%= attribute.to_s.humanize %></th>
+    <% end %>
+    <th>View</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <tbody id = "<%= instance.pluralize %>">
+    <% collection.each do |m| %>
+      <tr id="<%= dom_id(m) %>" class="<%= cycle('alt', '') %>">
+        <% columns.each_with_index do |attribute, i| %>
+          <% if column_types[attribute] == :boolean %>
+            <% value = yes?(m.send(attribute)) %>
+          <% elsif column_types[attribute] == :text %>
+            <% value = truncate_words(m.send(attribute), 10, ". . . #{link_to('More', send("#{instance}_path", m))}") %>
+          <% else %>
+            <% value = h(m.send(attribute)) %>
+          <% end %>
+          <% if i == 0 %>
+            <td class="first_col"><%= link_to(value, send("#{instance}_path", m)) %></td>
+          <% else %>
+            <td><%= value %></td>
+          <% end %>
+        <% end %>
+        <td><%= link_to(image_tag('admin/icon_show.png'), send("#{instance}_path", m)) %></td>
+        <td><%= link_to(image_tag('admin/icon_edit.png'), send("edit_#{instance}_path", m)) %></td>
+        <td><%= link_to(image_tag('admin/icon_destroy.png'), send("#{instance}_path", m), :confirm => 'Are you sure?', :method => :delete) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

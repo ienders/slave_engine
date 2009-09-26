@@ -1,0 +1,7 @@
+<h2><%= model_name.titleize.pluralize %></h2>
+
+<%= admin_controls instance.pluralize, :for => :index %>
+
+<%= will_paginate(@model_collection) %>
+<%= admin_table(@model_collection, @admin_table_columns) %>
+<%= will_paginate(@model_collection) %>

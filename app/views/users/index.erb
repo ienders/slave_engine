@@ -1,0 +1,13 @@
+<h2><%= model_name.titleize.pluralize %></h2>
+
+<% admin_controls(model_name.pluralize, :for => :index) do %>
+  <li>
+    <% form_tag url_for(:action => 'search') do %>
+      <%= text_field_tag :value, params[:value], :size => 15 %>&nbsp;<%= submit_tag 'Find by Email or Name' %>
+    <% end %>
+  </li>
+<% end %>
+
+<%= will_paginate(@model_collection) %>
+<%= admin_table(@model_collection, @admin_table_columns) %>
+<%= will_paginate(@model_collection) %>
