@@ -2,8 +2,11 @@
 
   slave engine [sleyv en-juh n]
   - noun
-  1. The Inhumans' holiest relic and birthright, built from Kree technology, unearthed by The Unspoken to take revenge on the humans and turn them to Alpha Primitives.
-  2. A Rails Engine which contains User and Role management, including rudimentary session management (login/logout).  Comes bundled with a default Admin role and a Users admin panel, only accessible to users with the Admin role.
+  1. The Inhumans' holiest relic and birthright, built from Kree technology, 
+     unearthed by The Unspoken to take revenge on the humans and turn them to Alpha Primitives.
+  2. A Rails Engine which contains User and Role management, including rudimentary 
+     session management (login/logout).  Comes bundled with a default Admin role 
+     and a Users admin panel, only accessible to users with the Admin role.
 
 = Prerequisites to Installing the Slave Engine
 
@@ -96,11 +99,11 @@ app/views/foo/_form.erb:
 app/views/foo/_foo.erb:
 
   <div id="<%= dom_id(@foo) %>">
-	  <div class="fields_group">
-	    <h5>Foo Col:</h5>     <%= h @foo.foocol %>
-	    <h5>Bar:</h5>         <%= h @foo.bar %>
-  	  <h5>Created at:</h5>  <%= h @role.created_at %>
-  	  <h5>Updated at:</h5>  <%= h @role.updated_at %>
+    <div class="fields_group">
+      <h5>Foo Col:</h5>     <%= h @foo.foocol %>
+      <h5>Bar:</h5>         <%= h @foo.bar %>
+      <h5>Created at:</h5>  <%= h @role.created_at %>
+      <h5>Updated at:</h5>  <%= h @role.updated_at %>
     </div>
   </div>
   
