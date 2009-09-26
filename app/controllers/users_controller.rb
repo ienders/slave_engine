@@ -31,6 +31,7 @@ class UsersController < AdminController
   end
 
   def search
+    @admin_table_columns = admin_table_columns
     redirect_to :action => :index and return if params[:value].blank? 
     @users = User.all(:conditions => ['LOWER(email) LIKE ?', "%#{params[:value].downcase}%"])
     if @users.size == 0

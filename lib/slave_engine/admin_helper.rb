@@ -22,7 +22,7 @@ module SlaveEngine
       control_set = (options[:controls] ? options[:controls].clone : nil) || []
       control_set.unshift(control_sets[options[:for]]) if options[:for]
 
-      render(
+      controls = _render_to_string(
         :partial => 'shared/admin_controls',
         :locals => {
           :controller         => options[:controller] || name.to_s.tableize,
@@ -31,6 +31,17 @@ module SlaveEngine
           :additional_content => block_given? ? capture(&block) : ''
         }
       )
+      
+      return concat(controls) if block_given?
+      controls
+    end
+
+    def _render_to_string(*args)
+      begin
+        render_to_string(*args)
+      rescue NoMethodError
+        controller.send('render_to_string', *args)
+      end
     end
 
   end

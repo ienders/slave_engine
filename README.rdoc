@@ -95,10 +95,10 @@ And create two view partials to tell Slave Engine how to render/edit your model 
   
 app/views/foo/_form.erb:
 
-  <% fieldset do %>
+  <fieldset>
     <p><label>Foo Col</label><%= f.text_field :foocol %></p>
     <p><label>Bar</label><%= f.text_field :bar %></p>
-  <% end %>
+  </fieldset>
 
 app/views/foo/_foo.erb:
 
