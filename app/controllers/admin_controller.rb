@@ -20,17 +20,17 @@ class AdminController < ApplicationController
   end
 
   def show
-    @m = instance_variable_set(instance, model.find(params[:id]))
+    @m = instance_variable_set("@#{instance}", model.find(params[:id]))
     render_template_for_section 'show'
   end
 
   def new
-    @m = instance_variable_set(instance, model.new)
+    @m = instance_variable_set("@#{instance}", model.new)
     render_template_for_section 'new'
   end
 
   def create
-    @m = instance_variable_set(instance, model.new(params[instance.to_sym]))
+    @m = instance_variable_set("@#{instance}", model.new(params[instance.to_sym]))
     if @m.save
       flash[:message] = '#{model_name.titleize} was successfully created.'
       redirect_to :action => 'show', :id => @m.id
@@ -40,12 +40,12 @@ class AdminController < ApplicationController
   end
 
   def edit
-    @m = instance_variable_set(instance, model.find(params[:id]))
+    @m = instance_variable_set("@#{instance}", model.find(params[:id]))
     render_template_for_section 'edit'
   end
 
   def update
-    @m = instance_variable_set(instance, model.find(params[:id]))
+    @m = instance_variable_set("@#{instance}", model.find(params[:id]))
     if @m.update_attributes(params[instance.to_sym])
       flash[:message] = '#{model_name.titleize} was successfully updated.'
       redirect_to :action => 'show', :id => params[:id]
@@ -55,7 +55,7 @@ class AdminController < ApplicationController
   end
 
   def destroy
-    @m = instance_variable_set(instance, model.find(params[:id]))
+    @m = instance_variable_set("@#{instance}", model.find(params[:id]))
     @m.destroy
     flash[:message] = "#{model_name}.titleize was deleted"
     redirect_to :action => 'index'
